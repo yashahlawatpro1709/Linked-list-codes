@@ -1,0 +1,87 @@
+#include<iostream>
+using namespace std;
+class Node{
+    public:
+    int data;
+    Node*next;
+    Node(int data){
+        this->data=data;
+        this->next=NULL;
+    }
+    //destructor for memory free
+    ~Node(){
+        int value=this->data;
+        if(this->next!=NULL){
+            delete next;
+            next=NULL;
+        }
+        cout<<"Memeory is freed"<<value<<endl;
+    }
+};
+void insertathead(Node* &head,int d ){
+    Node*temp=new Node(d);
+    temp->next=head;
+    head=temp;
+}
+void insertatposition(Node*&head,int position,int d){
+    Node*temp=head;
+    int cnt=1;
+    while(cnt<position-1){
+        temp=temp->next;
+        cnt++;
+    }
+    Node*nodetoinsert=new Node(d);
+    nodetoinsert->next=temp->next;
+    temp->next=nodetoinsert;
+}
+void deletenode(int position,Node*&head){
+    //deleting first or start node
+     if(position==1){
+         Node*temp=head;
+         head=head->next;
+         temp->next=NULL;
+         delete temp;
+         
+     }
+     else{
+         //deleting any middle node
+         Node*current=head;
+         Node*prev=NULL;
+         int cnt=1;
+         while(cnt< position){
+             prev=current;
+             current=current->next;
+             cnt++;
+         }
+         prev->next=current->next;
+         current->next=NULL;
+         delete current;
+     }
+}
+
+void print(Node* &head){
+    Node*temp=head;
+    while(temp!=NULL){
+        cout<<temp->data<<" ";
+        temp=temp->next;
+    }
+    cout<<endl; 
+    
+}
+int main()
+{
+    Node*node1=new Node(10);
+    node1->next=new Node(12);
+    node1->next->next=new Node(4);
+    cout<<node1->data<<endl;
+    cout<<node1->next<<endl;
+    Node*head=node1;
+    print(head);
+    insertathead(head,3);
+    print(head);
+    insertatposition(head,1,22);
+    print(head);
+    deletenode(1,head);
+    print(head);
+    return 0;
+}
